@@ -34,7 +34,7 @@ class Ticket:
         return build_embed(*fields, title=f"{self.id} - {self.name}")
 
     def embed_field(self) -> EmbedField:
-        return EmbedField(f"{self.id} - {self.name}", f"Status: {self.status.name}\nAssignee: {self.get_assignee()}")
+        return EmbedField(f"{self.id} - {self.name}", f"Status: {self.status.value}\nAssignee: {self.get_assignee()}")
 
 
 class KanbanCog (commands.Cog):
