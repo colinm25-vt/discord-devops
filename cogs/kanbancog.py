@@ -14,15 +14,15 @@ class TicketStatus (Enum):
 
 
 class Ticket:
-    def __init__(self, id: int, name: str, desc: str, status: TicketStatus = TicketStatus.NEW, assignee: Union[str, None] = None):
+    def __init__(self, id: int, name: str, desc: str, status: TicketStatus = TicketStatus.NEW, assignee: Union[nextcord.User, None] = None):
         self.id: int = id
         self.name: str = name
         self.desc: str = desc
         self.status: TicketStatus = status
-        self.assignee: Union[str, None] = assignee
+        self.assignee: Union[nextcord.User, None] = assignee
 
     def get_assignee(self) -> str:
-        return self.assignee if self.assignee is not None else "None"
+        return self.assignee.display_name if self.assignee is not None else "None"
 
     def embed(self) -> nextcord.Embed:
         fields = [
@@ -72,7 +72,7 @@ class KanbanCog (commands.Cog):
             await interaction.send("Ticket removed!")
 
     @_kanban.subcommand(name="assign", description="Assign a ticket")
-    async def _kb_assign(self, interaction: Interaction, id: int, name: str):
+    async def _kb_assign(self, interaction: Interaction, id: int, name: nextcord.User):
         try:
             self.tickets[id].assignee = name
         except KeyError:
