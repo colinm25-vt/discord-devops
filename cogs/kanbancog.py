@@ -113,7 +113,7 @@ class KanbanCog(commands.Cog):
         status: str = SlashOption("status", choices=[e.value for e in TicketStatus], required=False),
         assignee: nextcord.User = SlashOption("assignee", required=False),
     ):
-        # TODO: there is a maximum of 10 fields per embed, break this into multiple pages
+        # TODO: there is a maximum of 25 fields per embed, break this into multiple pages
         fields = [
             self.tickets[i].embed_field()
             for i in self.tickets.keys()
