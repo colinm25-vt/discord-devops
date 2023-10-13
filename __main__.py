@@ -5,6 +5,7 @@ import os
 
 from cogs.pingcog import PingCog
 from cogs.kanbancog import KanbanCog
+from cogs.meetingcog import MeetingCog
 
 
 load_dotenv()
@@ -18,6 +19,7 @@ def prep_client():
     client = nextcord.Client(intents=INTENTS)
     client.add_cog(PingCog(client))
     client.add_cog(KanbanCog(client))
+    client.add_cog(MeetingCog(client))
 
     @client.event
     async def on_ready():
@@ -26,7 +28,7 @@ def prep_client():
 
 
 def client_handler():
-    '''Start the client, use a keyboard interrupt to close'''
+    """Start the client, use a keyboard interrupt to close"""
     logger.log("Use ctrl+C to shut down.")
     prep_client()
     client.run(DISCORD_TOKEN)

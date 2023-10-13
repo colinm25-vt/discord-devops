@@ -9,9 +9,16 @@ class EmbedField:
         self.inline: bool = inline
 
 
-def build_embed(*fields: EmbedField, title: str = nextcord.Embed.Empty, url: str = nextcord.Embed.Empty, description: str = nextcord.Embed.Empty,
-                thumbnail: str = nextcord.Embed.Empty, image: str = nextcord.Embed.Empty, color: Union[int, nextcord.Color] = nextcord.Embed.Empty) -> nextcord.Embed:
-    '''
+def build_embed(
+    *fields: EmbedField,
+    title: str = nextcord.Embed.Empty,
+    url: str = nextcord.Embed.Empty,
+    description: str = nextcord.Embed.Empty,
+    thumbnail: str = nextcord.Embed.Empty,
+    image: str = nextcord.Embed.Empty,
+    color: Union[int, nextcord.Color] = nextcord.Embed.Empty
+) -> nextcord.Embed:
+    """
     Builds an embeddable object and returns it
 
     Parameters
@@ -35,7 +42,7 @@ def build_embed(*fields: EmbedField, title: str = nextcord.Embed.Empty, url: str
     -------
     embed: `nextcord.Embed`
         An embeddable object
-    '''
+    """
     embed = nextcord.Embed(title=title, url=url, description=description, color=color)
     embed.set_thumbnail(url=thumbnail)
     embed.set_image(url=image)

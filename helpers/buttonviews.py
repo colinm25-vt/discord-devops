@@ -3,7 +3,7 @@ from enum import Enum
 import nextcord
 
 
-class ButtonEnums (Enum):
+class ButtonEnums(Enum):
     LEFT = 0
     RIGHT = 1
     CLOSE = 2
@@ -12,9 +12,9 @@ class ButtonEnums (Enum):
 
 
 class PageButtons(nextcord.ui.View):
-    '''
+    """
     Page buttons including left, right, and close
-    '''
+    """
 
     def __init__(self, timeout: int = 180):
         super().__init__(timeout=timeout)
@@ -41,9 +41,9 @@ class PageButtons(nextcord.ui.View):
 
 
 class CloseButton(nextcord.ui.View):
-    '''
+    """
     Single close button
-    '''
+    """
 
     def __init__(self, timeout: int = 180):
         super().__init__(timeout=timeout)
@@ -58,9 +58,9 @@ class CloseButton(nextcord.ui.View):
 
 
 class ConfirmButtons(nextcord.ui.View):
-    '''
+    """
     Accept and deny buttons
-    '''
+    """
 
     def __init__(self, timeout: int = 180):
         super().__init__(timeout=timeout)

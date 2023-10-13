@@ -6,7 +6,7 @@ from enum import Enum
 import nextcord
 
 
-class TicketStatus (Enum):
+class TicketStatus(Enum):
     NEW = "New"
     IN_PROGRESS = "In progress"
     IN_REVIEW = "In review"
@@ -14,7 +14,14 @@ class TicketStatus (Enum):
 
 
 class Ticket:
-    def __init__(self, id: int, name: str, desc: str, status: TicketStatus = TicketStatus.NEW, assignee: Union[nextcord.User, None] = None):
+    def __init__(
+        self,
+        id: int,
+        name: str,
+        desc: str,
+        status: TicketStatus = TicketStatus.NEW,
+        assignee: Union[nextcord.User, None] = None,
+    ):
         self.id: int = id
         self.name: str = name
         self.desc: str = desc
@@ -28,8 +35,7 @@ class Ticket:
         fields = [
             EmbedField("Description", self.desc),
             EmbedField("Status", self.status.value),
-            EmbedField(
-                "Assignee", self.get_assignee())
+            EmbedField("Assignee", self.get_assignee()),
         ]
         return build_embed(*fields, title=f"{self.id} - {self.name}")
 
@@ -37,14 +43,14 @@ class Ticket:
         return EmbedField(f"{self.id} - {self.name}", f"Status: {self.status.value}\nAssignee: {self.get_assignee()}")
 
 
-class KanbanCog (commands.Cog):
-    '''
+class KanbanCog(commands.Cog):
+    """
     Kanban command cog
 
     Commands
     --------
     kanban (+6)
-    '''
+    """
 
     def __init__(self, client: nextcord.Client):
         self.client: nextcord.Client = client
@@ -57,8 +63,7 @@ class KanbanCog (commands.Cog):
 
     @_kanban.subcommand(name="add", description="Add a ticket")
     async def _kb_add(self, interaction: Interaction, name: str, description: str):
-        self.tickets[self.next_ticket_id] = Ticket(
-            self.next_ticket_id, name, description)
+        self.tickets[self.next_ticket_id] = Ticket(self.next_ticket_id, name, description)
         self.next_ticket_id += 1
         await interaction.send(f"Ticket added! Id: {self.next_ticket_id - 1}")
 
@@ -81,7 +86,12 @@ class KanbanCog (commands.Cog):
             await interaction.send("Ticket updated!")
 
     @_kanban.subcommand(name="move", description="Move a ticket")
-    async def _kb_move(self, interaction: Interaction, id: int, status: str = SlashOption("status", choices=[e.value for e in TicketStatus])):
+    async def _kb_move(
+        self,
+        interaction: Interaction,
+        id: int,
+        status: str = SlashOption("status", choices=[e.value for e in TicketStatus]),
+    ):
         try:
             self.tickets[id].status = TicketStatus(status)
         except KeyError:
@@ -96,9 +106,19 @@ class KanbanCog (commands.Cog):
         except KeyError:
             await interaction.send("No such ticket.", ephemeral=True)
 
-    @_kanban.subcommand(name="list", description="List all tickets")
-    async def _kb_list(self, interaction: Interaction):
+    @_kanban.subcommand(name="list", description="List tickets")
+    async def _kb_list(
+        self,
+        interaction: Interaction,
+        status: str = SlashOption("status", choices=[e.value for e in TicketStatus], required=False),
+        assignee: nextcord.User = SlashOption("assignee", required=False),
+    ):
         # TODO: there is a maximum of 10 fields per embed, break this into multiple pages
-        fields = [self.tickets[i].embed_field() for i in self.tickets.keys()]
+        fields = [
+            self.tickets[i].embed_field()
+            for i in self.tickets.keys()
+            if (status is None or self.tickets[i].status == TicketStatus(status))
+            and (assignee is None or self.tickets[i].assignee == assignee)
+        ]
         embed = build_embed(*fields, title="Tickets")
         await interaction.send(embed=embed)

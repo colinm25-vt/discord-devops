@@ -3,14 +3,14 @@ from nextcord import Interaction
 import nextcord
 
 
-class PingCog (commands.Cog):
-    '''
+class PingCog(commands.Cog):
+    """
     Ping command cog
 
     Commands
     --------
     ping
-    '''
+    """
 
     def __init__(self, client: nextcord.Client):
         self.client: nextcord.Client = client
