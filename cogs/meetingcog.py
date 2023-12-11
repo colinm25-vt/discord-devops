@@ -205,7 +205,7 @@ class MeetingCog(commands.Cog):
                 meeting.register_user(self._get_user(buttons.user))
             elif buttons.value == ButtonEnums.DENY:
                 meeting.deregister_user(self._get_user(buttons.user))
-            fields = [EmbedField(title=f"{e.user}", content="", inline=True) for e in meeting.users]
+            fields = [EmbedField(title=f"{e.user.display_name}", content="", inline=True) for e in meeting.users]
             emb = build_embed(*fields, title=f"Meeting {id}: {meeting}")
             buttons = ConfirmButtons(timeout=button_timeout)
             await interaction.edit_original_message(embed=emb, view=buttons)
